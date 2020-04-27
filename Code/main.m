@@ -27,6 +27,9 @@ featureScales = [20, 28, 40];
 numScales = size(featureScales, 2);
 numAngles = size(angles, 2);
 
+% If you just want to display results
+%displayResults();
+
 % Save/Load functionality
 saveRun = false;  % Set to true if you wish to save the results from this run
 loadRun = true;  % Set to true if you wish to load previous processed data
