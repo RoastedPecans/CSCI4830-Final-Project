@@ -16,8 +16,8 @@ clear all;
 %% This Script runs the final project -- we will only support black and white images
 
 % Initialize some variables we will need
-matlabFilename = "./results/matlab-files/girlRowingResults.mat";  % Location of matlab file we want to save/load from
-imgFilename = "./images/girlRowing.jpg";  % Location of image file to use
+matlabFilename = "./results/matlab-files/65019.mat";  % Location of matlab file we want to save/load from
+imgFilename = "./images/65019.jpg";  % Location of image file to use
 img = uint8(rgb2gray(imread(imgFilename)));
 [height, width] = size(img);
 %angles = [0, 0.5236, 1.0472, 1.5708, 2.0944, 2.6180];
@@ -37,11 +37,11 @@ loadRun = true;  % Set to true if you wish to load previous processed data
 if ~loadRun
 
     %% Get Texture Information From Image
-    % Generates 17 filters + convolves them with our image at 3 different
+    % Generates 16 filters + convolves them with our image at 3 different
     % scales. Returns results of convolutions.
-    % We will collapse these 51 filters into a single texton id
+    % We will collapse these 48 filters into a single texton id
     % with clustering.
-    % 16 oriented bars + 1 Difference of Gaussian
+    % 16 oriented bars
     disp("Creating Filter Bank + Convolving with Image");
     [smallFeatures, mediumFeatures, largeFeatures] = getFeatures(img);
 
@@ -198,7 +198,7 @@ if ~loadRun
             % Apply 2nd-order Savitzky-Golay Filtering to results to
             % "enhance local minima and smooth detection peaks"
             
-            %rotatedResults(:, :, i, j) = savitzkyGolay2D_rle_coupling(height, width, rotatedResults(:, :, i, j), scales(i) + 1, scales(i) + 1, 2);
+            rotatedResults(:, :, i, j) = savitzkyGolay2D_rle_coupling(height, width, rotatedResults(:, :, i, j), featureScales(i) + 1, featureScales(i) + 1, 2);
             
             % Ensure window size is odd because we need that shit
             if mod(radius, 2) == 0
@@ -206,7 +206,7 @@ if ~loadRun
             end
             
             % Actually apply filter
-            rotatedResults(:, :, i, j) = sgolayfilt(rotatedResults(:, :, i, j), 2, radius);
+            %rotatedResults(:, :, i, j) = sgolayfilt(rotatedResults(:, :, i, j), 2, radius);
             %imshow(rotatedResults(:, :, i, j), [1, 32]);
             %x = input('x' ,'s');
 
@@ -222,6 +222,7 @@ if ~loadRun
             results(:, :, i, j) = imrotate(rotatedResults(:, :, i, j), rad2deg(angles(j)), 'crop');
         end
     end
+    
     
     % See if we should save our results for future use
     if saveRun
@@ -241,7 +242,7 @@ end
 
        
 % Load results into "results" variable
-load(matlabFilename);
+%load(matlabFilename);
 
 % Load Previously Calculated Ground Truths
 load('./results/matlab-files/allGroundTruths.mat');
@@ -276,10 +277,10 @@ size2 = size(mPbResults, 2);
 pbNorm = mat2gray(mPbResults);
 bounds = find(pbNorm < 0.25);
 pbNorm(bounds) = 1;
-pbNorm(1:15, :) = 1;
-pbNorm(:, 1:15) = 1;
-pbNorm(size1-15:size1, :) = 1;
-pbNorm(:, size2-15:size2) = 1;
+pbNorm(1:17, :) = 1;
+pbNorm(:, 1:17) = 1;
+pbNorm(size1-17:size1, :) = 1;
+pbNorm(:, size2-17:size2) = 1;
 pbNorm = imcomplement(pbNorm);
 factor = 255 / max(pbNorm(:));
 displayImg = uint8(pbNorm .* factor);
