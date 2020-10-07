@@ -1,4 +1,4 @@
-===== README ======
+## README
 This is my Final Project for CSCI 4830 - Computer Vision. It implements 
 the mPb edge detector mentioned in the .pdf located at the root of the 
 directory.
@@ -41,3 +41,5 @@ By default, main.m should display my results for ./images/girlRowing.jpg. Howeve
 You shouldn't have to run train.m or train2.m (unless you want to), just main.m.
 
 Besides that, most of my code is thoroughly commented and self-explantory, but let me know if you have any questions! 
+
+![Original vs Resulting Image](./comparison.png)
